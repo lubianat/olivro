@@ -1,0 +1,41 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tiago's books</title>
+    <meta property="og:description" content="powered by Wikidata" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body>
+
+        <h5 class="title is-5">All books</h5>
+        <p>
+            <iframe width="75%" height="400" src="https://query.wikidata.org/embed.html#%0ASELECT%20%2A%20WHERE%20%7B%0A%20%20%20%20VALUES%20%3Fbook%20%7Bvalue%7D%0A%20%20%20%20%3Fbook%20rdfs%3Alabel%20%3FbookLabel%20.%20%0A%20%20%20%20FILTER%28LANG%28%3FbookLabel%29%3D%22en%22%29%0A%7D%0A"></iframe>
+        </p>
+        <br />
+        <h5 class="title is-5">All books</h5>
+        <p>
+            <iframe width="75%" height="400" src="https://query.wikidata.org/embed.html#%0ASELECT%20%2A%20WHERE%20%7B%0A%20%20%20%20VALUES%20%3Fbook%20%7Bvalue%7D%0A%20%20%20%20%3Fbook%20wdt%3AP50%20%3Fauthor%20.%20%0A%20%20%20%20%3Fauthor%20rdfs%3Alabel%20%3FauthorLabel%20.%20%0A%20%20%20%20FILTER%28LANG%28%3FauthorLabel%29%3D%22en%22%29%0A%7D%0A"></iframe>
+        </p>
+        <br />
+                <h5 class="title is-5">All books</h5>
+        <p>
+        <iframe width="75%" height="400" src="https://query.wikidata.org/embed.html#%0A%23defaultType%3AMap%0ASELECT%20%2A%20WHERE%20%7B%0A%20%20%20%20VALUES%20%3Fbook%20%7Bvalue%7D%0A%20%20%20%20%3Fbook%20wdt%3AP50%20%3Fauthor%20.%20%0A%20%20%20%20%3Fauthor%20wdt%3AP19%20%3Fbirthplace%20.%20%0A%20%20%20%20%3Fbirthplace%20wdt%3AP625%20%3Fgeo%20.%20%0A%20%20%20%20%3Fauthor%20rdfs%3Alabel%20%3FauthorLabel%20.%20%0A%20%20%20%20FILTER%28LANG%28%3FauthorLabel%29%3D%22en%22%29%0A%7D%0A"></iframe>
+        </p>
+        <br />
+</body>
+
+
+
