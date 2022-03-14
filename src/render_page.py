@@ -13,39 +13,43 @@ for shelf in books["shelves"]:
 
 values = format_with_prefix(book_qids)
 
-query_books = """
-SELECT * WHERE {
-    VALUES ?book {value}
+query_books = f"""
+SELECT * WHERE {{
+    VALUES ?book {values}
     ?book rdfs:label ?bookLabel . 
     FILTER(LANG(?bookLabel)="en")
-}
+}}
 """
 
 query_books_url = render_url(query_books)
 
 
-query_authors = """
-SELECT * WHERE {
-    VALUES ?book {value}
+query_authors = f"""
+SELECT * WHERE {{
+    VALUES ?book {values}
     ?book wdt:P50 ?author . 
     ?author rdfs:label ?authorLabel . 
     FILTER(LANG(?authorLabel)="en")
-}
+}}
 """
 
 query_authors_url = render_url(query_authors)
 
 
-query_authors_map = """
-#defaultType:Map
-SELECT * WHERE {
-    VALUES ?book {value}
+query_authors_map = f"""
+#defaultView:Map
+SELECT * WHERE {{
+    VALUES ?book {values}
     ?book wdt:P50 ?author . 
     ?author wdt:P19 ?birthplace . 
-    ?birthplace wdt:P625 ?geo . 
+    ?birthplace wdt:P625 ?geo .
+
+    ?birthplace rdfs:label ?birthplaceLabel . 
+    FILTER(LANG(?birthplaceLabel)="en")
+
     ?author rdfs:label ?authorLabel . 
     FILTER(LANG(?authorLabel)="en")
-}
+}}
 """
 
 query_authors_map_url = render_url(query_authors_map)
@@ -80,12 +84,12 @@ index = f"""
             <iframe width="75%" height="400" src="{query_books_url}"></iframe>
         </p>
         <br />
-        <h5 class="title is-5">All books</h5>
+        <h5 class="title is-5">Author list</h5>
         <p>
             <iframe width="75%" height="400" src="{query_authors_url}"></iframe>
         </p>
         <br />
-                <h5 class="title is-5">All books</h5>
+                <h5 class="title is-5">Author map</h5>
         <p>
         <iframe width="75%" height="400" src="{query_authors_map_url}"></iframe>
         </p>

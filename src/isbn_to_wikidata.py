@@ -18,12 +18,16 @@ authors_dict = {
     "OL217344A": "Q258662",
     "OL347356A": "Q95202439",
     "OL7522004A": "Q465907",
+    "OL4281817A": "Q471443",
 }
-publishers_dict = {"Companhia das Letras": "Q2990311", "Koenemann": "Q10552136"}
+publishers_dict = {
+    "Companhia das Letras": "Q2990311",
+    "Koenemann": "Q10552136",
+    "Open Letter": "Q107005607",
+}
 langcode_dict = {"pt": "Q5146", "en": "Q1860"}
 
 title = data["title"]
-isbn_10 = isbnlib.mask(data["isbn_10"][0])
 
 isbn_13 = isbnlib.mask(data["isbn_13"][0])
 open_library_id = data["key"].split("/")[-1]
@@ -57,12 +61,17 @@ LAST|P31|Q3331189
 LAST|P1476|{lang}:"{title}"
 LAST|P407|{langcode_dict[lang]}
 LAST|P577|{publish_date}
-LAST|P957|"{isbn_10}"
 LAST|P212|"{isbn_13}"
 LAST|P648|"{open_library_id}"
 """
 )
 
+try:
+    isbn_10 = isbnlib.mask(data["isbn_10"][0])
+
+    print(f"""LAST|P957|"{isbn_10}" """)
+except:
+    pass
 for author in authors:
     print(f"""LAST|P50|{author}""")
 
