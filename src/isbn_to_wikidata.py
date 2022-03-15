@@ -3,8 +3,15 @@
 import requests
 from datetime import datetime
 import isbnlib
+import sys
+from dictionaries.dictionaries import dicts
+from helper import add_key
 
-isbn = input("ISBN:")
+if len(sys.argv) == 2:
+    isbn = sys.argv[1]
+else:
+    isbn = input("ISBN:")
+
 
 url = f"https://openlibrary.org/isbn/{isbn}.json"
 
@@ -13,19 +20,6 @@ r = requests.get(url)
 data = r.json()
 print(url)
 
-
-authors_dict = {
-    "OL217344A": "Q258662",
-    "OL347356A": "Q95202439",
-    "OL7522004A": "Q465907",
-    "OL4281817A": "Q471443",
-}
-publishers_dict = {
-    "Companhia das Letras": "Q2990311",
-    "Koenemann": "Q10552136",
-    "Open Letter": "Q107005607",
-}
-langcode_dict = {"pt": "Q5146", "en": "Q1860"}
 
 title = data["title"]
 
@@ -36,17 +30,22 @@ try:
     date = datetime.strptime(data["publish_date"], "%b %d, %Y")
     publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/11")
 except ValueError:
-    date = datetime.strptime(data["publish_date"], "%Y")
-    publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
+    try:
+        date = datetime.strptime(data["publish_date"], "%Y")
+        publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
+    except ValueError:
+        date = datetime.strptime(data["publish_date"], "%B %d, %Y")
+        publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
+
 
 authors = []
-for author in data["authors"]:
+for author in data["authors_open_library"]:
     author_id = author["key"].split("/")[-1]
-    authors.append(authors_dict[author_id])
+    authors.append(dicts["authors"][author_id])
 
 publishers = []
 for publisher in data["publishers"]:
-    publishers.append(publishers_dict[publisher])
+    publishers.append(dicts["publishers"][publisher])
 
 
 lang = input("Language code:")
@@ -59,7 +58,7 @@ LAST|Lpt|"{title}"
 LAST|Dpt|"edição de livro"
 LAST|P31|Q3331189
 LAST|P1476|{lang}:"{title}"
-LAST|P407|{langcode_dict[lang]}
+LAST|P407|{dicts["langcode"][lang]}
 LAST|P577|{publish_date}
 LAST|P212|"{isbn_13}"
 LAST|P648|"{open_library_id}"
