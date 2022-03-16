@@ -20,7 +20,6 @@ r = requests.get(url)
 data = r.json()
 print(url)
 
-
 title = data["title"]
 
 isbn_13 = isbnlib.mask(data["isbn_13"][0])
@@ -39,9 +38,9 @@ except ValueError:
 
 
 authors = []
-for author in data["authors_open_library"]:
+for author in data["authors"]:
     author_id = author["key"].split("/")[-1]
-    authors.append(dicts["authors"][author_id])
+    authors.append(dicts["authors_open_library"][author_id])
 
 publishers = []
 for publisher in data["publishers"]:
