@@ -30,24 +30,29 @@ query_values = {}
 
 
 isbn_13 = isbnlib.mask(data["isbn13"])
+date_original = str(data["date_published"])
 try:
-    date = datetime.strptime(data["date_published"], "%b %d, %Y")
+    date = datetime.strptime(date_original, "%b %d, %Y")
     publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/11")
 except ValueError:
     try:
-        date = datetime.strptime(data["date_published"], "%Y")
+        date = datetime.strptime(date_original, "%Y")
         publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
     except ValueError:
         try:
-            date = datetime.strptime(data["date_published"], "%B %d, %Y")
+            date = datetime.strptime(date_original, "%B %d, %Y")
             publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
         except ValueError:
             try:
-                date = datetime.strptime(data["date_published"], "%Y-%m-%dT00:00:01Z")
+                date = datetime.strptime(date_original, "%Y-%m-%dT00:00:01Z")
                 publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
             except ValueError:
-                date = datetime.strptime(data["date_published"], "%YT")
-                publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
+                try:
+                    date = datetime.strptime(date_original, "%Y-%m-%dT00:00:01Z")
+                    publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
+                except ValueError:
+                    date = datetime.strptime(date_original, "%Y-%m-%dT00:00:00.000Z")
+                    publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
 
 
 query_values["authors"] = []

@@ -25,16 +25,25 @@ title = data["title"]
 isbn_13 = isbnlib.mask(data["isbn_13"][0])
 open_library_id = data["key"].split("/")[-1]
 
+date_original = str(data["publish_date"])
 try:
-    date = datetime.strptime(data["publish_date"], "%b %d, %Y")
+    date = datetime.strptime(date_original, "%b %d, %Y")
     publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/11")
 except ValueError:
     try:
-        date = datetime.strptime(data["publish_date"], "%Y")
+        date = datetime.strptime(date_original, "%Y")
         publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
     except ValueError:
-        date = datetime.strptime(data["publish_date"], "%B %d, %Y")
-        publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
+        try:
+            date = datetime.strptime(date_original, "%B %d, %Y")
+            publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
+        except ValueError:
+            try:
+                date = datetime.strptime(date_original, "%Y-%m-%dT00:00:01Z")
+                publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
+            except ValueError:
+                date = datetime.strptime(date_original, "%YT")
+                publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
 
 
 authors = []

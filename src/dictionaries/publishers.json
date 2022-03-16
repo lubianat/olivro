@@ -1,4 +1,5 @@
 {
+    "Alfaguara": "Q3324371",
     "Companhia das Letras": "Q2990311",
     "Koenemann": "Q10552136",
     "Open Letter": "Q107005607",
@@ -14,5 +15,10 @@
     "L&PM": "Q10314919",
     "": "unknown",
     "Editora Arqueiro": "Q10370871",
-    "Houghton Mifflin Harcourt": "Q390074"
+    "Houghton Mifflin Harcourt": "Q390074",
+    "Oxford University Press, USA": "Q99309150",
+    "JSN": "Q111263688",
+    "Objetiva": "Q10340021",
+    "Sextante": "Q10370871",
+    "Editora Companhia das Letras": "Q2990311"
 }
