@@ -14,59 +14,57 @@ if len(sys.argv) == 2:
 else:
     isbn = input("ISBN:")
 
-url = f"https://api2.isbndb.com/book/{isbn}"
-
-h = {"Authorization": isbndb_key}
-
-
-r = requests.get(url, headers=h)
-data = r.json()
-data = data["book"]
+data = isbnlib.meta(isbn)
 print(data)
-title = data["title"]
+
+
+title = data["Title"]
 
 
 query_values = {}
 
 
-isbn_13 = isbnlib.mask(data["isbn13"])
+isbn_13 = isbnlib.mask(data["ISBN-13"])
+
+date_original = data["Year"]
 try:
-    date = datetime.strptime(data["date_published"], "%b %d, %Y")
+    date = datetime.strptime(date_original, "%b %d, %Y")
     publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/11")
 except ValueError:
     try:
-        date = datetime.strptime(data["date_published"], "%Y")
+        date = datetime.strptime(date_original, "%Y")
         publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
     except ValueError:
         try:
-            date = datetime.strptime(data["date_published"], "%B %d, %Y")
+            date = datetime.strptime(date_original, "%B %d, %Y")
             publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
         except ValueError:
             try:
-                date = datetime.strptime(data["date_published"], "%Y-%m-%dT00:00:01Z")
+                date = datetime.strptime(date_original, "%Y-%m-%dT00:00:01Z")
                 publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
             except ValueError:
-                date = datetime.strptime(data["date_published"], "%YT")
+                date = datetime.strptime(date_original, "%YT")
                 publish_date = datetime.strftime(date, "+%Y-%m-%dT00:00:00Z/09")
 
 
 query_values["authors"] = []
 
-for author in data["authors"]:
+for author in data["Authors"]:
     query_values["authors"].append(
         update_query_values(dict_key="authors", key_now=author)
     )
 
 query_values["publishers"] = [
-    update_query_values(dict_key="publishers", key_now=data["publisher"])
+    update_query_values(dict_key="publishers", key_now=data["Publisher"])
 ]
 
 
-lang = data["language"]
+lang = data["Language"]
 
 if lang == "en_US":
     lang = "en"
-
+if lang == "pt-BR":
+    lang = "pt"
 print(
     f"""
 CREATE
