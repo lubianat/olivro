@@ -6,39 +6,24 @@ with open("src/books.json") as f:
     books = json.loads(f.read())
 
 
-book_qids = []
+book_ol_ids = []
 for shelf in books["shelves"]:
-    book_qids.extend(shelf["books"])
+
+    for book in shelf["books"]:
+        if "OL" in book:
+            book_ol_ids.append(book)
 
 
-values = format_with_prefix(book_qids)
+# Implement logic to get author OL ids from API request
 
-query_books = f"""
-SELECT * WHERE {{
-    VALUES ?book {values}
-    ?book rdfs:label ?bookLabel . 
-    FILTER(LANG(?bookLabel)="en")
-}}
-"""
+# Implement query to build map from OL ids
 
-query_books_url = render_url(query_books)
-
-
-query_authors = f"""
-SELECT * WHERE {{
-    VALUES ?book {values}
-    ?book wdt:P50 ?author . 
-    ?author rdfs:label ?authorLabel . 
-    FILTER(LANG(?authorLabel)="en")
-}}
-"""
-
-query_authors_url = render_url(query_authors)
-
+# Implement logging system for when OL ids are not on Wikidata
 
 query_authors_map = f"""
 #defaultView:Map
 SELECT * WHERE {{
+
     VALUES ?book {values}
     ?book wdt:P50 ?author . 
     ?author wdt:P19 ?birthplace . 
@@ -79,15 +64,6 @@ index = f"""
 
 <body>
 
-        <h5 class="title is-5">All books</h5>
-        <p>
-            <iframe width="75%" height="400" src="{query_books_url}"></iframe>
-        </p>
-        <br />
-        <h5 class="title is-5">Author list</h5>
-        <p>
-            <iframe width="75%" height="400" src="{query_authors_url}"></iframe>
-        </p>
         <br />
                 <h5 class="title is-5">Author map</h5>
         <p>
