@@ -5,7 +5,8 @@ from datetime import datetime
 import isbnlib
 import sys
 from dictionaries.dictionaries import dicts
-from helper import add_key
+from wdcuration import add_key
+
 
 if len(sys.argv) == 2:
     isbn = sys.argv[1]
